@@ -3,7 +3,6 @@ using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.AspNet.SignalR.Infrastructure;
 using Ninject;
 using SlowPokeWars.Engine.Game;
-using SlowPokeWars.Engine.Game.Implementation;
 using SlowPokeWars.Web.Hubs;
 
 namespace SlowPokeWars.Web.Bootstrapper
@@ -25,6 +24,7 @@ namespace SlowPokeWars.Web.Bootstrapper
         public void Initialize()
         {
             _kernel.Bind<IGameCoordinator>().To<GameCoordinator>().InSingletonScope();
+            _kernel.Bind<IGameInstanceFactory>().To<SlowPokeWarsGameFactory>().InSingletonScope();
         }
 
         public IDependencyResolver GetSignalRDependencyResolver()

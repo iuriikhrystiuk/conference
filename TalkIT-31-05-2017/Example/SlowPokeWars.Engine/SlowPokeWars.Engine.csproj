@@ -41,10 +41,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Field.cs" />
+    <Compile Include="Entities\Position.cs" />
     <Compile Include="Entities\SlowPoke.cs" />
+    <Compile Include="Entities\GameClient.cs" />
     <Compile Include="Game\IConnectionsManager.cs" />
     <Compile Include="Game\IGameCoordinator.cs" />
     <Compile Include="Game\Implementation\GameCoordinator.cs" />
+    <Compile Include="Game\IGameInstanceFactory.cs" />
+    <Compile Include="Game\Implementation\TimerGameTicker.cs" />
+    <Compile Include="Game\IGameTicker.cs" />
+    <Compile Include="Game\Implementation\NotifiableBase.cs" />
+    <Compile Include="Game\Implementation\SlowPokeWarsGame.cs" />
+    <Compile Include="Game\IGameInstance.cs" />
+    <Compile Include="Game\INotifiable.cs" />
+    <Compile Include="Game\Implementation\SlowPokeWarsGameFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

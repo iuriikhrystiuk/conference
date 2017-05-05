@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http;
+using SlowPokeWars.Engine.Entities;
 
 namespace SlowPokeWars.Engine.Game
 {
     public interface IGameCoordinator
     {
-        void Apply();
+        string Apply(GameClient client);
+
+        string Leave(GameClient client);
     }
 }
