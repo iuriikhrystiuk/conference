@@ -39,10 +39,9 @@ namespace SlowPokeWars.Engine.Game
         {
             lock (_games)
             {
-                var openGame = _games.FirstOrDefault(g => g.Contains(client));
+                var openGame = _games.FirstOrDefault(g => g.RemovePlayer(client));
                 if (openGame != null)
                 {
-                    openGame.RemovePlayer(client);
                     if (openGame.IsEmpty())
                     {
                         openGame.Dispose();
@@ -54,6 +53,14 @@ namespace SlowPokeWars.Engine.Game
             }
 
             return string.Empty;
+        }
+
+        public IGameInstance GetGame(string gameIdentifier)
+        {
+            lock (_games)
+            {
+                return _games.FirstOrDefault(g => g.GetIdentifier() == gameIdentifier);
+            }
         }
 
         private void NotifyChanges(string gameIdentifier)

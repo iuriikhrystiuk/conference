@@ -23,7 +23,9 @@
 
         $.connection.hub.start().done(function () {
             gameHub.server.enter("some name").done(function (gameId) {
-                console.log(gameId);
+                $.get("api/game/getdescription", { gameIdentifier: gameId }).done(function(description) {
+                    console.log(description);
+                });
             });
         });
 

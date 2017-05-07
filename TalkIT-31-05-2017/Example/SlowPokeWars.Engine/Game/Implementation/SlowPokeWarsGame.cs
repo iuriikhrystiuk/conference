@@ -1,33 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using Newtonsoft.Json.Linq;
 using SlowPokeWars.Engine.Entities;
 
 namespace SlowPokeWars.Engine.Game
 {
     internal class SlowPokeWarsGame : NotifiableBase, IGameInstance
     {
-        private readonly List<SlowPoke> _slowPokes;
         private readonly Guid _gameGuid;
         private readonly IGameTicker _gameTicker;
-        private readonly Field _field;
+        private readonly IGameField _slowPokeGameField;
 
-        public SlowPokeWarsGame(IGameTicker gameTicker)
+        public SlowPokeWarsGame(IGameTicker gameTicker, IGameField slowPokeGameField)
         {
             _gameTicker = gameTicker;
-            _slowPokes = new List<SlowPoke>();
             _gameGuid = Guid.NewGuid();
-            _field = new Field();
+            _slowPokeGameField = slowPokeGameField;
         }
 
         public bool Initialized()
         {
-            return _slowPokes.Count == 2;
+            return !_slowPokeGameField.HasSpot();
         }
 
         public bool IsEmpty()
         {
-            return _slowPokes.Count == 0;
+            return _slowPokeGameField.IsEmpty();
         }
 
         public void AddPlayer(GameClient client)
@@ -35,8 +32,7 @@ namespace SlowPokeWars.Engine.Game
             var slowPoke = new SlowPoke(client);
             slowPoke.SubscribeNotifications(Notify);
             slowPoke.AcceptGameTicker(_gameTicker);
-            slowPoke.EnterField(_field);
-            _slowPokes.Add(slowPoke);
+            _slowPokeGameField.Enter(slowPoke);
             if (Initialized())
             {
                 Notify();
@@ -44,13 +40,9 @@ namespace SlowPokeWars.Engine.Game
             }
         }
 
-        public void RemovePlayer(GameClient client)
+        public bool RemovePlayer(GameClient client)
         {
-            var existingSlowPoke = _slowPokes.FirstOrDefault(s => s.Client.ConnectionId == client.ConnectionId);
-            if (existingSlowPoke != null)
-            {
-                _slowPokes.Remove(existingSlowPoke);
-            }
+            return _slowPokeGameField.Exit(client);
         }
 
         public string GetIdentifier()
@@ -63,14 +55,11 @@ namespace SlowPokeWars.Engine.Game
             SubscribeNotifications(() => callback(GetIdentifier()));
         }
 
-        public string GetDescription()
+        public JObject GetDescription()
         {
-            return string.Empty;
-        }
-
-        public bool Contains(GameClient client)
-        {
-            return _slowPokes.Any(s => s.Client.ConnectionId == client.ConnectionId);
+            var description = new JObject();
+            description.Add("field", _slowPokeGameField.GetDescription());
+            return description;
         }
 
         public void Dispose()

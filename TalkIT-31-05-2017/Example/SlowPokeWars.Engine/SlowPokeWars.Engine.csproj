@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,10 +44,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Field.cs" />
+    <Compile Include="Entities\IFieldPlayer.cs" />
+    <Compile Include="Entities\ICollidable.cs" />
+    <Compile Include="Entities\ICollisionDetector.cs" />
+    <Compile Include="Entities\Implementation\Projectile.cs" />
+    <Compile Include="Entities\Implementation\SlowPokeCollisionDetector.cs" />
+    <Compile Include="Entities\Implementation\SlowPokeGameField.cs" />
+    <Compile Include="Entities\IFieldObject.cs" />
+    <Compile Include="Entities\IGameField.cs" />
+    <Compile Include="Entities\IMovableObject.cs" />
     <Compile Include="Entities\Position.cs" />
-    <Compile Include="Entities\SlowPoke.cs" />
+    <Compile Include="Entities\Implementation\SlowPoke.cs" />
     <Compile Include="Entities\GameClient.cs" />
+    <Compile Include="Game\IDescribable.cs" />
     <Compile Include="Game\IConnectionsManager.cs" />
     <Compile Include="Game\IGameCoordinator.cs" />
     <Compile Include="Game\Implementation\GameCoordinator.cs" />
@@ -58,6 +70,8 @@
     <Compile Include="Game\Implementation\SlowPokeWarsGameFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

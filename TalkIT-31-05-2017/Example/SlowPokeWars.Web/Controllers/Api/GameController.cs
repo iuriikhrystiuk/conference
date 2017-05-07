@@ -1,21 +1,23 @@
-﻿using SlowPokeWars.Engine.Game;
+﻿using System.Runtime.InteropServices;
+using SlowPokeWars.Engine.Game;
 using System.Web.Http;
 
 namespace SlowPokeWars.Web.Controllers.Api
 {
     public class GameController : ApiController
     {
-        private readonly IGameCoordinator gameCoordinator;
+        private readonly IGameCoordinator _gameCoordinator;
 
         public GameController(IGameCoordinator gameCoordinator)
         {
-            this.gameCoordinator = gameCoordinator;
+            _gameCoordinator = gameCoordinator;
         }
 
         [HttpGet]
-        public IHttpActionResult Apply()
+        public IHttpActionResult GetDescription(string gameIdentifier)
         {
-            return Ok();
+            var game = _gameCoordinator.GetGame(gameIdentifier);
+            return Ok(game.GetDescription());
         }
     }
 }

@@ -8,5 +8,7 @@ namespace SlowPokeWars.Engine.Game
         string Apply(GameClient client);
 
         string Leave(GameClient client);
+
+        IGameInstance GetGame(string gameIdentifier);
     }
 }
