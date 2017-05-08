@@ -21,20 +21,22 @@ namespace SlowPokeWars.Web.Hubs
             return game;
         }
 
-        public async void Leave()
+        public Task Leave()
         {
             var game = _gameCoordinator.Leave(new GameClient(Context.ConnectionId));
             if (!string.IsNullOrEmpty(game))
             {
-                await Groups.Remove(Context.ConnectionId, game);
+                return Groups.Remove(Context.ConnectionId, game);
             }
+
+            return Task.CompletedTask;
         }
 
-        public override Task OnDisconnected(bool stopCalled)
+        public override async Task OnDisconnected(bool stopCalled)
         {
-            Leave();
+            await Leave();
 
-            return base.OnDisconnected(stopCalled);
+            await base.OnDisconnected(stopCalled);
         }
     }
 }

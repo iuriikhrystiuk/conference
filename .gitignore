@@ -250,3 +250,7 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Default ignores for application build files and npm modules files.
+**/npm
+**/app
