@@ -122,11 +122,15 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Client\config\helpers.js" />
+    <Content Include="Client\config\webpack.dev.js" />
+    <Content Include="Client\config\webpack.common.js" />
+    <Content Include="Client\webpack.config.js" />
     <Content Include="Global.asax" />
-    <Content Include="gulpfile.js" />
-    <Content Include="Index.html" />
+    <Content Include="Client\src\Index.html" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
+    <Content Include="Client\tsconfig.webpack.json" />
     <None Include="Scripts\libs\jquery-3.1.1\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\libs\jquery-3.1.1\jquery-3.1.1.js" />
     <Content Include="Scripts\libs\jquery-3.1.1\jquery-3.1.1.min.js" />
@@ -151,8 +155,7 @@
   <ItemGroup>
     <Content Include="Scripts\libs\jquery-3.1.1\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\libs\jquery-3.1.1\jquery-3.1.1.min.map" />
-    <Content Include="App\tsconfig.json" />
-    <Content Include="Scripts\systemjs.config.js" />
+    <Content Include="Client\tsconfig.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -167,12 +170,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Client\src\assets\" />
     <Folder Include="Scripts\app\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="App\app\app.ts" />
-    <TypeScriptCompile Include="App\boot.ts" />
-    <TypeScriptCompile Include="App\main.ts" />
+    <TypeScriptCompile Include="Client\src\app\app.ts" />
+    <TypeScriptCompile Include="Client\src\app\boot.ts" />
+    <TypeScriptCompile Include="Client\src\custom-typings.d.ts" />
+    <TypeScriptCompile Include="Client\src\main.browser.ts" />
+    <TypeScriptCompile Include="Client\src\polyfills.browser.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

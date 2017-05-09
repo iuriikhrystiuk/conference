@@ -254,3 +254,4 @@ paket-files/
 # Default ignores for application build files and npm modules files.
 **/npm
 **/Scripts/app
+/TalkIT-31-05-2017/Example/SlowPokeWars.Web/dll
