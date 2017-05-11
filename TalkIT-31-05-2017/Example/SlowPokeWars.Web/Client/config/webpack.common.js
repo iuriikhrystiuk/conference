@@ -59,8 +59,10 @@ module.exports = function (options) {
             extensions: [".ts", ".js", ".json"],
 
             // An array of directory names to be resolved to the current directory
-            modules: [helpers.root(helpers.baseFolder), helpers.root("node_modules")]
-
+            modules: [
+                helpers.root(helpers.baseFolder),
+                helpers.root("node_modules")
+            ]
         },
 
         /*
@@ -208,12 +210,14 @@ module.exports = function (options) {
                 name: "polyfills",
                 chunks: ["polyfills"]
             }),
+
             // This enables tree shaking of the vendor modules
             new CommonsChunkPlugin({
                 name: "vendor",
                 chunks: ["main"],
                 minChunks: module => /node_modules/.test(module.resource)
             }),
+
             // Specify the correct order the scripts will be injected in
             new CommonsChunkPlugin({
                 name: ["polyfills", "vendor"].reverse()
@@ -274,13 +278,6 @@ module.exports = function (options) {
             new ScriptExtHtmlWebpackPlugin({
                 defaultAttribute: "defer"
             }),
-
-            /**
-             * Plugin LoaderOptionsPlugin (experimental)
-             *
-             * See: https://gist.github.com/sokra/27b24881210b56bbaff7
-             */
-            new LoaderOptionsPlugin({}),
 
             // Fix Angular 2
             new NormalModuleReplacementPlugin(

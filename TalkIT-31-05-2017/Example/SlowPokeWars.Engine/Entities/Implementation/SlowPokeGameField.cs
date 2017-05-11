@@ -105,7 +105,9 @@ namespace SlowPokeWars.Engine.Entities
             var description = new JObject();
             description.Add("top", _topPlayer?.GetDescription());
             description.Add("bottom", _bottomPlayer?.GetDescription());
-            description.Add("objects", new JArray(_fieldObjects.Except(new List<IFieldObject> { _topPlayer, _bottomPlayer })));
+
+            var objects = _fieldObjects.Except(new List<IFieldObject> { _topPlayer, _bottomPlayer }).ToList();
+            description.Add("objects", objects.Any() ? new JArray(objects.Select(o => o.GetDescription())) : null);
             return description;
         }
     }

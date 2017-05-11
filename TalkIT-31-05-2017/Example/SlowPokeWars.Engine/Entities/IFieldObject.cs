@@ -4,14 +4,14 @@ using SlowPokeWars.Engine.Game;
 
 namespace SlowPokeWars.Engine.Entities
 {
-    public interface IFieldObject: ICollidable
+    public interface IFieldObject : ICollidable, IDescribable
     {
         Position Position { get; }
 
         AreaDescriptor GetArea();
     }
 
-    public class AreaDescriptor: IDescribable
+    public class AreaDescriptor : IDescribable
     {
         public AreaDescriptor(int length, int width)
         {

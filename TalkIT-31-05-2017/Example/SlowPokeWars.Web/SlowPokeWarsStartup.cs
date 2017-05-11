@@ -24,7 +24,8 @@ namespace SlowPokeWars.Web
 
             app.MapSignalR(new HubConfiguration
             {
-                EnableJavaScriptProxies = true,
+                EnableJSONP = true,
+                EnableDetailedErrors = true,
                 Resolver = bootstrapper.GetSignalRDependencyResolver()
             });
             app.UseNinjectMiddleware(bootstrapper.GetKernel);

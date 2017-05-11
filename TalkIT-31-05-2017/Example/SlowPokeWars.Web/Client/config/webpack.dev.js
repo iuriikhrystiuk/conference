@@ -130,6 +130,14 @@ module.exports = function (options) {
                 }
             }),
 
+            new ProvidePlugin({
+                jQuery: "jquery",
+                $: "jquery",
+                jquery: "jquery",
+                'window.jQuery': "jquery",
+                'window.$': "jquery"
+            }),
+
             new DllBundlesPlugin({
                 bundles: {
                     polyfills: [
@@ -152,9 +160,7 @@ module.exports = function (options) {
                         "@angular/http",
                         "@angular/router",
                         "@angularclass/hmr",
-                        "rxjs",
-                        "jquery",
-                        "signalr"
+                        "rxjs"
                     ]
                 },
                 dllDir: helpers.root("dll"),
@@ -163,8 +169,6 @@ module.exports = function (options) {
                     plugins: []
                 })
             }),
-
-            new ProvidePlugin({ jQuery: "jquery", $: "jquery", jquery: "jquery" }),
 
             /**
              * Plugin: AddAssetHtmlPlugin
@@ -176,29 +180,9 @@ module.exports = function (options) {
              */
             new AddAssetHtmlPlugin([
                 { filepath: helpers.root(`dll/${DllBundlesPlugin.resolveFile("polyfills")}`) },
-                { filepath: helpers.root(`dll/${DllBundlesPlugin.resolveFile("vendor")}`) }
+                { filepath: helpers.root(`dll/${DllBundlesPlugin.resolveFile("vendor")}`) },
+                { filepath: helpers.root(`dll/${DllBundlesPlugin.resolveFile("signalR")}`) },
             ]),
-
-            /**
-             * Plugin: NamedModulesPlugin (experimental)
-             * Description: Uses file names as module name.
-             *
-             * See: https://github.com/webpack/webpack/commit/a04ffb928365b19feb75087c63f13cadfc08e1eb
-             */
-            // new NamedModulesPlugin(),
-
-            /**
-             * Plugin LoaderOptionsPlugin (experimental)
-             *
-             * See: https://gist.github.com/sokra/27b24881210b56bbaff7
-             */
-            new LoaderOptionsPlugin({
-                debug: true,
-                options: {
-
-                }
-            }),
-
         ],
 
         /**

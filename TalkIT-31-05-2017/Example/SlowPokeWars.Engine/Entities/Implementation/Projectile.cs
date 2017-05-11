@@ -1,4 +1,6 @@
-﻿namespace SlowPokeWars.Engine.Entities
+﻿using Newtonsoft.Json.Linq;
+
+namespace SlowPokeWars.Engine.Entities
 {
     public class Projectile : IMovableObject
     {
@@ -45,5 +47,9 @@
         }
 
         public bool Destroyed { get; private set; }
+        public JObject GetDescription()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -62,6 +62,9 @@ declare var HMR: boolean;
 declare var System: SystemJS;
 declare var require: NodeRequire;
 
+declare var jQuery: any;
+declare var $: any;
+
 interface SystemJS {
   import: (path?: string) => Promise<any>;
 }
