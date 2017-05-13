@@ -14,6 +14,7 @@ namespace SlowPokeWars.Engine.Entities
         public int X { get; set; }
 
         public int Y { get; set; }
+
         public JObject GetDescription()
         {
             return new JObject { { "x", X }, { "y", Y } };

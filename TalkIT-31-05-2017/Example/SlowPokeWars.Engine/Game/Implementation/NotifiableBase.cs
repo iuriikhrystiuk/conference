@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SlowPokeWars.Engine.Game
 {
-    public abstract class NotifiableBase: INotifiable
+    public abstract class NotifiableBase : INotifiable
     {
         private readonly ICollection<Action> _callbacks;
 
@@ -22,12 +22,9 @@ namespace SlowPokeWars.Engine.Game
 
         protected void Notify()
         {
-            lock (_callbacks)
+            foreach (var callback in _callbacks)
             {
-                foreach (var callback in _callbacks)
-                {
-                    callback();
-                }
+                callback();
             }
         }
 

@@ -21,9 +21,10 @@ namespace SlowPokeWars.Engine.Entities
         }
 
         public Position Position { get; set; }
+
         public AreaDescriptor GetArea()
         {
-            return new AreaDescriptor(1, 1);
+            return new AreaDescriptor(new Position(1, 1), new Position(2, 2));
         }
 
         public void MoveUp()

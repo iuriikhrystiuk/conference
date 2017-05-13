@@ -2,8 +2,10 @@
 
 namespace SlowPokeWars.Engine.Entities
 {
-    public interface IFieldPlayer : IMovableObject, IDescribable
+    public interface IFieldPlayer : IMovableObject
     {
         GameClient Client { get; }
+
+        void AcceptField(IGameField field);
     }
 }

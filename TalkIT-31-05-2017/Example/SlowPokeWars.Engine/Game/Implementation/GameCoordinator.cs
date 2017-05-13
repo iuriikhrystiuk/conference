@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SlowPokeWars.Engine.Entities;
 
@@ -10,19 +11,26 @@ namespace SlowPokeWars.Engine.Game
         private readonly IGameInstanceFactory _gameInstanceFactory;
 
         private readonly ICollection<IGameInstance> _games;
+        private readonly ICollection<GameClient> _clients;
 
         public GameCoordinator(IConnectionsManager connectionManager, IGameInstanceFactory gameInstanceFactory)
         {
             _connectionManager = connectionManager;
             _gameInstanceFactory = gameInstanceFactory;
             _games = new List<IGameInstance>();
+            _clients = new List<GameClient>();
         }
 
-        public string Apply(GameClient client)
+        public IGameInstance Apply(GameClient client)
         {
             lock (_games)
             {
-                var openGame = _games.FirstOrDefault(g => !g.Initialized());
+                if (_clients.Contains(client))
+                {
+                    throw new Exception("Client already in game");
+                }
+
+                var openGame = _games.FirstOrDefault(g => g.HasSpot(client));
                 if (openGame == null)
                 {
                     openGame = _gameInstanceFactory.CreateGameInstance();
@@ -31,28 +39,30 @@ namespace SlowPokeWars.Engine.Game
                 }
 
                 openGame.AddPlayer(client);
-                return openGame.GetIdentifier();
+                _clients.Add(client);
+                return openGame;
             }
         }
 
-        public string Leave(GameClient client)
+        public IGameInstance Leave(GameClient client)
         {
             lock (_games)
             {
                 var openGame = _games.FirstOrDefault(g => g.RemovePlayer(client));
                 if (openGame != null)
                 {
+                    _clients.Remove(client);
                     if (openGame.IsEmpty())
                     {
                         openGame.Dispose();
                         _games.Remove(openGame);
                     }
 
-                    return openGame.GetIdentifier();
+                    return openGame;
                 }
             }
 
-            return string.Empty;
+            return null;
         }
 
         public IGameInstance GetGame(string gameIdentifier)

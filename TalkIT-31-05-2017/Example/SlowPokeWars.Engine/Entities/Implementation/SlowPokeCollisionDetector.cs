@@ -7,7 +7,7 @@ namespace SlowPokeWars.Engine.Entities
     {
         public IEnumerable<ICollidable> GetCollisions(IFieldObject targetObject, IEnumerable<IFieldObject> objectsOnField)
         {
-            throw new NotImplementedException();
+            yield break;
         }
     }
 }

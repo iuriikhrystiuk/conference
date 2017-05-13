@@ -10,7 +10,8 @@ namespace SlowPokeWars.Engine.Entities
         bool TryMoveLeft(IMovableObject movable);
         bool TryMoveRight(IMovableObject movable);
         bool TryMoveUp(IMovableObject movable);
-        bool HasSpot();
+        bool HasSpot(GameClient client);
         bool IsEmpty();
+        IFieldPlayer GetPlayer(GameClient client);
     }
 }

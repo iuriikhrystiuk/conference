@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\AreaDescriptor.cs" />
     <Compile Include="Entities\IFieldPlayer.cs" />
     <Compile Include="Entities\ICollidable.cs" />
     <Compile Include="Entities\ICollisionDetector.cs" />

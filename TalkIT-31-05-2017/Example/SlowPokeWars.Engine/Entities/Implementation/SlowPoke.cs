@@ -12,19 +12,18 @@ namespace SlowPokeWars.Engine.Entities
 
         public GameClient Client { get; }
 
-        public Position Position { get; private set; }
+        public Position Position { get; set; }
 
         public bool Destroyed { get; private set; }
 
         public AreaDescriptor GetArea()
         {
-            return new AreaDescriptor(2, 1);
+            return new AreaDescriptor(new Position(2, 1), new Position(0, 0));
         }
 
         public SlowPoke(GameClient client)
         {
             Client = client;
-            Position = new Position(0, 0);
             _projectiles = new Collection<Projectile>();
         }
 
@@ -32,6 +31,7 @@ namespace SlowPokeWars.Engine.Entities
         {
             if (_field.TryMoveLeft(this))
             {
+                Notify();
             }
         }
 
@@ -39,6 +39,7 @@ namespace SlowPokeWars.Engine.Entities
         {
             if (_field.TryMoveRight(this))
             {
+                Notify();
             }
         }
 
@@ -46,6 +47,7 @@ namespace SlowPokeWars.Engine.Entities
         {
             if (_field.TryMoveDown(this))
             {
+                Notify();
             }
         }
 
@@ -53,6 +55,7 @@ namespace SlowPokeWars.Engine.Entities
         {
             if (_field.TryMoveUp(this))
             {
+                Notify();
             }
         }
 
@@ -61,19 +64,9 @@ namespace SlowPokeWars.Engine.Entities
 
         }
 
-        public void AcceptGameTicker(IGameTicker ticker)
-        {
-            ticker.SubscribeNotifications(BumpState);
-        }
-
-        public void EnterField(IGameField field)
+        public void AcceptField(IGameField field)
         {
             _field = field;
-        }
-
-        private void BumpState()
-        {
-            Notify();
         }
 
         public bool Collide(ICollidable target)
@@ -89,6 +82,7 @@ namespace SlowPokeWars.Engine.Entities
         public JObject GetDescription()
         {
             var description = new JObject();
+            description.Add("identifier", Client.ConnectionId);
             description.Add("position", Position.GetDescription());
             description.Add("area", GetArea().GetDescription());
             return description;

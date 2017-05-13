@@ -5,6 +5,7 @@ using Ninject.Web.WebApi.OwinHost;
 using Owin;
 using SlowPokeWars.Web.Bootstrapper;
 using System.Web.Http;
+using SlowPokeWars.Web.Hubs;
 
 [assembly: OwinStartup(typeof(SlowPokeWars.Web.SlowPokeWarsStartup))]
 
@@ -28,6 +29,7 @@ namespace SlowPokeWars.Web
                 EnableDetailedErrors = true,
                 Resolver = bootstrapper.GetSignalRDependencyResolver()
             });
+
             app.UseNinjectMiddleware(bootstrapper.GetKernel);
             app.UseNinjectWebApi(webApiConfiguration);
         }

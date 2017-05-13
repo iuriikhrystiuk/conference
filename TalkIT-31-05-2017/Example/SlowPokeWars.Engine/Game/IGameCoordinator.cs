@@ -5,9 +5,9 @@ namespace SlowPokeWars.Engine.Game
 {
     public interface IGameCoordinator
     {
-        string Apply(GameClient client);
+        IGameInstance Apply(GameClient client);
 
-        string Leave(GameClient client);
+        IGameInstance Leave(GameClient client);
 
         IGameInstance GetGame(string gameIdentifier);
     }

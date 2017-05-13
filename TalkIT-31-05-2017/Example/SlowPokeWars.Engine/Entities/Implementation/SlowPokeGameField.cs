@@ -27,31 +27,31 @@ namespace SlowPokeWars.Engine.Entities
         public bool TryMoveLeft(IMovableObject movable)
         {
             movable.Position.X--;
-            var succeeded = true;
-            var collisions = _collisionDetector.GetCollisions(movable, _fieldObjects.Except(Enumerable.Repeat(movable, 1)));
-            foreach (var collidable in collisions)
-            {
-                if (collidable.Collide(movable))
-                {
-                    succeeded = false;
-                }
-            }
-            return succeeded;
+            return Collide(movable);
+        }
+
+        public bool TryMoveDown(IMovableObject movable)
+        {
+            movable.Position.Y--;
+            return Collide(movable);
         }
 
         public bool TryMoveRight(IMovableObject movable)
         {
-            return true;
+            movable.Position.X++;
+            return Collide(movable);
         }
 
         public bool TryMoveUp(IMovableObject movable)
         {
-            return true;
+            movable.Position.Y++;
+            return Collide(movable);
         }
 
-        public bool HasSpot()
+        public bool HasSpot(GameClient client)
         {
-            return _bottomPlayer == null || _topPlayer == null;
+            return (_bottomPlayer == null && !(_topPlayer?.Client.Equals(client) ?? false)) || 
+                (_topPlayer == null && !(_bottomPlayer?.Client.Equals(client) ?? false));
         }
 
         public bool IsEmpty()
@@ -59,9 +59,19 @@ namespace SlowPokeWars.Engine.Entities
             return _bottomPlayer == null && _topPlayer == null;
         }
 
-        public bool TryMoveDown(IMovableObject movable)
+        public IFieldPlayer GetPlayer(GameClient client)
         {
-            return true;
+            if (_topPlayer.Client.Equals(client))
+            {
+                return _topPlayer;
+            }
+
+            if (_bottomPlayer.Client.Equals(client))
+            {
+                return _bottomPlayer;
+            }
+
+            return null;
         }
 
         public void Enter(IFieldPlayer player)
@@ -70,10 +80,15 @@ namespace SlowPokeWars.Engine.Entities
             {
                 _topPlayer = player;
                 _fieldObjects.Add(player);
+                player.Position = new Position(50, 100);
+                player.AcceptField(this);
             }
             else if (_bottomPlayer == null)
             {
                 _bottomPlayer = player;
+                _fieldObjects.Add(player);
+                player.Position = new Position(50, 0);
+                player.AcceptField(this);
             }
             else
             {
@@ -83,18 +98,18 @@ namespace SlowPokeWars.Engine.Entities
 
         public bool Exit(GameClient client)
         {
-            if (_topPlayer.Client.ConnectionId == client.ConnectionId)
+            if (_topPlayer?.Client.Equals(client) ?? false)
             {
-                _topPlayer = null;
                 _fieldObjects.Remove(_topPlayer);
+                _topPlayer = null;
                 return true;
             }
 
-            if (_bottomPlayer.Client.ConnectionId == client.ConnectionId)
+            if (_bottomPlayer?.Client.Equals(client) ?? false)
             {
-                _topPlayer = null;
                 _fieldObjects.Remove(_bottomPlayer);
-                return false;
+                _bottomPlayer = null;
+                return true;
             }
 
             return false;
@@ -109,6 +124,21 @@ namespace SlowPokeWars.Engine.Entities
             var objects = _fieldObjects.Except(new List<IFieldObject> { _topPlayer, _bottomPlayer }).ToList();
             description.Add("objects", objects.Any() ? new JArray(objects.Select(o => o.GetDescription())) : null);
             return description;
+        }
+
+        private bool Collide(IMovableObject movable)
+        {
+            var succeeded = true;
+            var collisions = _collisionDetector.GetCollisions(movable, _fieldObjects.Except(Enumerable.Repeat(movable, 1)));
+            foreach (var collidable in collisions)
+            {
+                if (collidable.Collide(movable))
+                {
+                    succeeded = false;
+                }
+            }
+
+            return succeeded;
         }
     }
 }
