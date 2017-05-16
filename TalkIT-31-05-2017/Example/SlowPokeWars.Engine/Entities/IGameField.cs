@@ -6,6 +6,7 @@ namespace SlowPokeWars.Engine.Entities
     {
         void Enter(IFieldPlayer player);
         bool Exit(GameClient client);
+        void AddObject(IFieldObject fieldObject);
         bool TryMoveDown(IMovableObject movable);
         bool TryMoveLeft(IMovableObject movable);
         bool TryMoveRight(IMovableObject movable);

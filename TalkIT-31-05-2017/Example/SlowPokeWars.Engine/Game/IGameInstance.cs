@@ -15,5 +15,6 @@ namespace SlowPokeWars.Engine.Game
         void MoveRight(string connectionId);
         void MoveUp(string connectionId);
         void MoveDown(string connectionId);
+        void Fire(string connectionId);
     }
 }

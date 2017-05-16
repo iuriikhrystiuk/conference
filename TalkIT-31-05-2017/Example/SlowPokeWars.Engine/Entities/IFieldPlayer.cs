@@ -6,6 +6,6 @@ namespace SlowPokeWars.Engine.Entities
     {
         GameClient Client { get; }
 
-        void AcceptField(IGameField field);
+        void Fire();
     }
 }

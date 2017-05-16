@@ -6,6 +6,7 @@
     <h2>My game is: {{gameId}}</h2>
     <div>Self: {{self | json}}</div>
     <div>Opponent: {{opponent | json}}</div>
+    <div>Objects: {{objects | json}}</div>
     <div>Error: {{error}}</div>
     <div>
         <button (click)="connect()">Connect</button>
@@ -17,6 +18,9 @@
         <button (click)="up()">Up</button>
         <button (click)="down()">Down</button>
     </div>
+    <div>
+        <button (click)="fire()">Fire</button>
+    </div>
   `
 })
 export class AppComponent {
@@ -25,6 +29,7 @@ export class AppComponent {
     gameState: any;
     self: any;
     opponent: any;
+    objects: any;
     error: string;
 
     constructor(private readonly zone:NgZone) {
@@ -67,6 +72,10 @@ export class AppComponent {
         this.proxy.invoke("leave").done(this.gameUpdated);
     }
 
+    public fire() {
+        this.proxy.invoke("fire", this.gameId);
+    }
+
     private gameUpdated(gameDescription: any) {
         if (gameDescription) {
             let field = gameDescription.field;
@@ -81,6 +90,7 @@ export class AppComponent {
                 this.resetSatate();
             }
             this.gameState = gameDescription;
+            this.objects = field.objects;
         } else {
             this.resetSatate();
         }
@@ -90,6 +100,7 @@ export class AppComponent {
         this.gameId = null;
         this.self = null;
         this.opponent = null;
+        this.objects = null;
         this.gameState = null;
     }
 

@@ -1,9 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
+using SlowPokeWars.Engine.Game;
 
 namespace SlowPokeWars.Engine.Entities
 {
-    public class Projectile : IMovableObject
+    public class Projectile : NotifiableBase, IMovableObject
     {
+        private IGameField _field;
+
         public bool Collide(ICollidable target)
         {
             if (!target.Destroyed)
@@ -29,28 +32,50 @@ namespace SlowPokeWars.Engine.Entities
 
         public void MoveUp()
         {
-            throw new System.NotImplementedException();
+            if (_field.TryMoveUp(this))
+            {
+                Notify();
+            }
         }
 
         public void MoveDown()
         {
-            throw new System.NotImplementedException();
+            if (_field.TryMoveDown(this))
+            {
+                Notify();
+            }
         }
 
         public void MoveLeft()
         {
-            throw new System.NotImplementedException();
+            if (_field.TryMoveLeft(this))
+            {
+                Notify();
+            }
         }
 
         public void MoveRight()
         {
-            throw new System.NotImplementedException();
+            if (_field.TryMoveRight(this))
+            {
+                Notify();
+            }
+        }
+
+        public void AcceptField(IGameField field)
+        {
+            _field = field;
+            _field.AddObject(this);
         }
 
         public bool Destroyed { get; private set; }
+
         public JObject GetDescription()
         {
-            throw new System.NotImplementedException();
+            var description = new JObject();
+            description.Add("position", Position.GetDescription());
+            description.Add("area", GetArea().GetDescription());
+            return description;
         }
     }
 }

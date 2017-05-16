@@ -18,7 +18,7 @@ namespace SlowPokeWars.Engine.Entities
 
         public AreaDescriptor GetArea()
         {
-            return new AreaDescriptor(new Position(2, 1), new Position(0, 0));
+            return new PlayerAreaDescriptor(Position);
         }
 
         public SlowPoke(GameClient client)
@@ -61,7 +61,11 @@ namespace SlowPokeWars.Engine.Entities
 
         public void Fire()
         {
-
+            var projectile = new Projectile();
+            projectile.Position = new Position(1, 1, Position.MovementActor);
+            _projectiles.Add(projectile);
+            projectile.AcceptField(_field);
+            Notify();
         }
 
         public void AcceptField(IGameField field)

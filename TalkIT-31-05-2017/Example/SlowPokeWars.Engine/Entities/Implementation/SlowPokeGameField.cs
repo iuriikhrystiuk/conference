@@ -26,25 +26,30 @@ namespace SlowPokeWars.Engine.Entities
 
         public bool TryMoveLeft(IMovableObject movable)
         {
-            movable.Position.X--;
+            movable.Position.DecrementAbscissa();
             return Collide(movable);
+        }
+
+        public void AddObject(IFieldObject fieldObject)
+        {
+            _fieldObjects.Add(fieldObject);
         }
 
         public bool TryMoveDown(IMovableObject movable)
         {
-            movable.Position.Y--;
+            movable.Position.DecrementOrdinata();
             return Collide(movable);
         }
 
         public bool TryMoveRight(IMovableObject movable)
         {
-            movable.Position.X++;
+            movable.Position.IncrementAbscissa();
             return Collide(movable);
         }
 
         public bool TryMoveUp(IMovableObject movable)
         {
-            movable.Position.Y++;
+            movable.Position.IncrementOrdinata();
             return Collide(movable);
         }
 
@@ -80,14 +85,14 @@ namespace SlowPokeWars.Engine.Entities
             {
                 _topPlayer = player;
                 _fieldObjects.Add(player);
-                player.Position = new Position(50, 100);
+                player.Position = new Position(50, 99, new ReverseMovementActor());
                 player.AcceptField(this);
             }
             else if (_bottomPlayer == null)
             {
                 _bottomPlayer = player;
                 _fieldObjects.Add(player);
-                player.Position = new Position(50, 0);
+                player.Position = new Position(50, 1);
                 player.AcceptField(this);
             }
             else

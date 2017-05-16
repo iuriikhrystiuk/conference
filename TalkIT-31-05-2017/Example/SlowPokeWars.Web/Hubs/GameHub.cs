@@ -59,6 +59,12 @@ namespace SlowPokeWars.Web.Hubs
             game.MoveDown(Context.ConnectionId);
         }
 
+        public void Fire(string gameIdentifier)
+        {
+            var game = _gameCoordinator.GetGame(gameIdentifier);
+            game.Fire(Context.ConnectionId);
+        }
+
         public override async Task OnDisconnected(bool stopCalled)
         {
             await Leave();

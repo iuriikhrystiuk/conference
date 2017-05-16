@@ -6,5 +6,7 @@
         void MoveDown();
         void MoveLeft();
         void MoveRight();
+
+        void AcceptField(IGameField field);
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json.Linq;
 using SlowPokeWars.Engine.Entities;
 
@@ -80,6 +78,12 @@ namespace SlowPokeWars.Engine.Game
         {
             var player = _gameField.GetPlayer(new GameClient(connectionId));
             player?.MoveDown();
+        }
+
+        public void Fire(string connectionId)
+        {
+            var player = _gameField.GetPlayer(new GameClient(connectionId));
+            player?.Fire();
         }
 
         public JObject GetDescription()
