@@ -1,11 +1,13 @@
-﻿using SlowPokeWars.Engine.Game;
-
-namespace SlowPokeWars.Engine.Entities
+﻿namespace SlowPokeWars.Engine.Entities
 {
     public interface IFieldPlayer : IMovableObject
     {
         GameClient Client { get; }
 
+        int Points { get; }
+
         void Fire();
+
+        void Score();
     }
 }

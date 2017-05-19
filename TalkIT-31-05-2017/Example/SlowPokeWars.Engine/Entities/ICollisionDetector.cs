@@ -4,6 +4,6 @@ namespace SlowPokeWars.Engine.Entities
 {
     public interface ICollisionDetector
     {
-        IEnumerable<ICollidable> GetCollisions(IFieldObject targetObject, IEnumerable<IFieldObject> objectsOnField);
+        IList<ICollidable> GetCollisions(IFieldObject targetObject, IEnumerable<IFieldObject> objectsOnField);
     }
 }

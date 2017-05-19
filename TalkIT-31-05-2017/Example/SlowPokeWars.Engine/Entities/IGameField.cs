@@ -15,5 +15,7 @@ namespace SlowPokeWars.Engine.Entities
         bool IsEmpty();
         IFieldPlayer GetPlayer(GameClient client);
         void RemoveObject(IFieldObject movable);
+
+        void Reset();
     }
 }

@@ -8,6 +8,7 @@ namespace SlowPokeWars.Engine.Entities
         private IGameField _field;
 
         public GameClient Client { get; }
+        public int Points { get; private set; }
 
         public Position Position { get; set; }
 
@@ -84,6 +85,11 @@ namespace SlowPokeWars.Engine.Entities
             Notify();
         }
 
+        public void Score()
+        {
+            Points++;
+        }
+
         public void AcceptField(IGameField field)
         {
             _field = field;
@@ -91,12 +97,14 @@ namespace SlowPokeWars.Engine.Entities
 
         public bool Collide(ICollidable target)
         {
-            return true;
+            return false;
         }
 
         public void Destroy()
         {
             Destroyed = true;
+            _field.Reset();
+            Notify();
         }
 
         public JObject GetDescription()
@@ -104,8 +112,39 @@ namespace SlowPokeWars.Engine.Entities
             var description = new JObject();
             description.Add("identifier", Client.ConnectionId);
             description.Add("position", Position.GetDescription());
+            description.Add("points", Points);
             description.Add("area", GetArea().GetDescription());
             return description;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var player = obj as SlowPoke;
+
+            if (player == null)
+            {
+                return false;
+            }
+
+            if (player == this)
+            {
+                return true;
+            }
+
+            return Equals(player);
+        }
+
+        private bool Equals(SlowPoke other)
+        {
+            return Equals(Client, other.Client) && Equals(Position, other.Position);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((Client != null ? Client.GetHashCode() : 0) * 397) ^ (Position != null ? Position.GetHashCode() : 0);
+            }
         }
     }
 }

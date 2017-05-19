@@ -16,9 +16,20 @@ namespace SlowPokeWars.Engine.Entities
 
         public bool Collide(ICollidable target)
         {
+            if (target.Equals(_parent))
+            {
+                return false;
+            }
+
+            if (target.Equals(this))
+            {
+                return false;
+            }
+
             if (!target.Destroyed)
             {
                 target.Destroy();
+                _parent.Score();
             }
 
             Destroy();
