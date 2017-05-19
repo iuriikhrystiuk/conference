@@ -2,10 +2,10 @@
 
 namespace SlowPokeWars.Engine.Entities
 {
-    public interface IFieldObject : ICollidable, IDescribable
+    public interface IFieldObject : ICollidable, IDescribable, INotifiable, IHasArea
     {
         Position Position { get; set; }
 
-        AreaDescriptor GetArea();
+        void UpdateState();
     }
 }

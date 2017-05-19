@@ -7,12 +7,10 @@ namespace SlowPokeWars.Engine.Game
     internal class SlowPokeWarsGame : NotifiableBase, IGameInstance
     {
         private readonly Guid _gameGuid;
-        private readonly IGameTicker _gameTicker;
         private readonly IGameField _gameField;
 
-        public SlowPokeWarsGame(IGameTicker gameTicker, IGameField gameField)
+        public SlowPokeWarsGame(IGameField gameField)
         {
-            _gameTicker = gameTicker;
             _gameGuid = Guid.NewGuid();
             _gameField = gameField;
         }
@@ -96,7 +94,6 @@ namespace SlowPokeWars.Engine.Game
 
         public void Dispose()
         {
-            _gameTicker?.Dispose();
             ClearSubscriptions();
         }
     }

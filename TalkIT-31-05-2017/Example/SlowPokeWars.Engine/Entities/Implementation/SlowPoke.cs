@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using SlowPokeWars.Engine.Game;
 
 namespace SlowPokeWars.Engine.Entities
@@ -8,7 +6,6 @@ namespace SlowPokeWars.Engine.Entities
     public class SlowPoke : NotifiableBase, IFieldPlayer
     {
         private IGameField _field;
-        private ICollection<Projectile> _projectiles;
 
         public GameClient Client { get; }
 
@@ -18,13 +15,16 @@ namespace SlowPokeWars.Engine.Entities
 
         public AreaDescriptor GetArea()
         {
-            return new PlayerAreaDescriptor(Position);
+            return new AreaDescriptor(Position, 2, 1);
+        }
+
+        public void UpdateState()
+        {
         }
 
         public SlowPoke(GameClient client)
         {
             Client = client;
-            _projectiles = new Collection<Projectile>();
         }
 
         public void MoveLeft()
@@ -32,6 +32,10 @@ namespace SlowPokeWars.Engine.Entities
             if (_field.TryMoveLeft(this))
             {
                 Notify();
+            }
+            else
+            {
+                Position.Restore();
             }
         }
 
@@ -41,6 +45,10 @@ namespace SlowPokeWars.Engine.Entities
             {
                 Notify();
             }
+            else
+            {
+                Position.Restore();
+            }
         }
 
         public void MoveDown()
@@ -48,6 +56,10 @@ namespace SlowPokeWars.Engine.Entities
             if (_field.TryMoveDown(this))
             {
                 Notify();
+            }
+            else
+            {
+                Position.Restore();
             }
         }
 
@@ -57,14 +69,18 @@ namespace SlowPokeWars.Engine.Entities
             {
                 Notify();
             }
+            else
+            {
+                Position.Restore();
+            }
         }
 
         public void Fire()
         {
-            var projectile = new Projectile();
-            projectile.Position = new Position(1, 1, Position.MovementActor);
-            _projectiles.Add(projectile);
+            var projectile = new Projectile(this);
+            projectile.Position = new Position(Position.X, Position.Y, Position.MovementActor);
             projectile.AcceptField(_field);
+            projectile.SubscribeNotifications(Notify);
             Notify();
         }
 

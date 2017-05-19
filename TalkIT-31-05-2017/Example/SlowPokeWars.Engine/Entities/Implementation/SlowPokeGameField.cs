@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using SlowPokeWars.Engine.Game;
 
 namespace SlowPokeWars.Engine.Entities
 {
     public class SlowPokeGameField : IGameField
     {
-        private Position _topLeft = new Position(0, 0);
-
-        private Position _bottomRight = new Position(100, 100);
+        private AreaDescriptor area = new AreaDescriptor(new Position(50, 50, new DefaultMovementActor()), 50, 50);
 
         private IFieldPlayer _topPlayer;
 
@@ -19,9 +18,12 @@ namespace SlowPokeWars.Engine.Entities
 
         private readonly ICollisionDetector _collisionDetector;
 
-        public SlowPokeGameField(ICollisionDetector collisionDetector)
+        private readonly IGameTicker _gameTicker;
+
+        public SlowPokeGameField(ICollisionDetector collisionDetector, IGameTicker gameTicker)
         {
             _collisionDetector = collisionDetector;
+            _gameTicker = gameTicker;
         }
 
         public bool TryMoveLeft(IMovableObject movable)
@@ -33,6 +35,8 @@ namespace SlowPokeWars.Engine.Entities
         public void AddObject(IFieldObject fieldObject)
         {
             _fieldObjects.Add(fieldObject);
+            _gameTicker.SubscribeNotifications(fieldObject.UpdateState);
+            _gameTicker.Start();
         }
 
         public bool TryMoveDown(IMovableObject movable)
@@ -55,7 +59,7 @@ namespace SlowPokeWars.Engine.Entities
 
         public bool HasSpot(GameClient client)
         {
-            return (_bottomPlayer == null && !(_topPlayer?.Client.Equals(client) ?? false)) || 
+            return (_bottomPlayer == null && !(_topPlayer?.Client.Equals(client) ?? false)) ||
                 (_topPlayer == null && !(_bottomPlayer?.Client.Equals(client) ?? false));
         }
 
@@ -79,6 +83,17 @@ namespace SlowPokeWars.Engine.Entities
             return null;
         }
 
+        public void RemoveObject(IFieldObject movable)
+        {
+            _gameTicker.UnsubscribeNotifications(movable.UpdateState);
+            _fieldObjects.Remove(movable);
+
+            if (!_fieldObjects.Any())
+            {
+                _gameTicker.Stop();
+            }
+        }
+
         public void Enter(IFieldPlayer player)
         {
             if (_topPlayer == null)
@@ -92,7 +107,7 @@ namespace SlowPokeWars.Engine.Entities
             {
                 _bottomPlayer = player;
                 _fieldObjects.Add(player);
-                player.Position = new Position(50, 1);
+                player.Position = new Position(50, 1, new DefaultMovementActor());
                 player.AcceptField(this);
             }
             else
@@ -123,6 +138,7 @@ namespace SlowPokeWars.Engine.Entities
         public JObject GetDescription()
         {
             var description = new JObject();
+            description.Add("area", GetArea().GetDescription());
             description.Add("top", _topPlayer?.GetDescription());
             description.Add("bottom", _bottomPlayer?.GetDescription());
 
@@ -134,6 +150,11 @@ namespace SlowPokeWars.Engine.Entities
         private bool Collide(IMovableObject movable)
         {
             var succeeded = true;
+            if (!CheckBoundaries(movable))
+            {
+                return false;
+            }
+
             var collisions = _collisionDetector.GetCollisions(movable, _fieldObjects.Except(Enumerable.Repeat(movable, 1)));
             foreach (var collidable in collisions)
             {
@@ -144,6 +165,21 @@ namespace SlowPokeWars.Engine.Entities
             }
 
             return succeeded;
+        }
+
+        private bool CheckBoundaries(IFieldObject fieldObject)
+        {
+            var fieldArea = GetArea();
+            var objectArea = fieldObject.GetArea();
+
+            var intersection = fieldArea.Intersects(objectArea);
+
+            return intersection == objectArea.GetAreaValue();
+        }
+
+        public AreaDescriptor GetArea()
+        {
+            return area;
         }
     }
 }

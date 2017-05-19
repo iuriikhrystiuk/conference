@@ -25,6 +25,14 @@ namespace SlowPokeWars.Engine.Game
             }
         }
 
+        public void Stop()
+        {
+            if (_timer.Enabled)
+            {
+                _timer.Stop();
+            }
+        }
+
         public void Dispose()
         {
             _timer.Elapsed -= TimerOnElapsed;

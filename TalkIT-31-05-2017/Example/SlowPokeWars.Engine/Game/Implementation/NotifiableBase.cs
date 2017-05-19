@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SlowPokeWars.Engine.Game
 {
     public abstract class NotifiableBase : INotifiable
     {
-        private readonly ICollection<Action> _callbacks;
+        private ICollection<Action> _callbacks;
+        private ICollection<Action> _callbacksToRemove;
 
         protected NotifiableBase()
         {
             _callbacks = new List<Action>();
+            _callbacksToRemove = new List<Action>();
         }
 
         public void SubscribeNotifications(Action callback)
@@ -20,11 +23,28 @@ namespace SlowPokeWars.Engine.Game
             }
         }
 
+        public void UnsubscribeNotifications(Action callback)
+        {
+            lock (_callbacksToRemove)
+            {
+                _callbacksToRemove.Add(callback);
+            }
+        }
+
         protected void Notify()
         {
-            foreach (var callback in _callbacks)
+            lock (_callbacksToRemove)
             {
-                callback();
+                _callbacks = _callbacks.Except(_callbacksToRemove).ToList();
+                _callbacksToRemove.Clear();
+            }
+
+            lock (_callbacks)
+            {
+                foreach (var callback in _callbacks)
+                {
+                    callback();
+                }
             }
         }
 

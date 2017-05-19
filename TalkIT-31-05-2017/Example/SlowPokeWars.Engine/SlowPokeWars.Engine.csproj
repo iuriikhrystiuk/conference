@@ -48,6 +48,7 @@
     <Compile Include="Entities\IFieldPlayer.cs" />
     <Compile Include="Entities\ICollidable.cs" />
     <Compile Include="Entities\ICollisionDetector.cs" />
+    <Compile Include="Entities\IHasArea.cs" />
     <Compile Include="Entities\IMovementActor.cs" />
     <Compile Include="Entities\Implementation\Projectile.cs" />
     <Compile Include="Entities\Implementation\SlowPokeCollisionDetector.cs" />
@@ -58,7 +59,6 @@
     <Compile Include="Entities\Implementation\Position.cs" />
     <Compile Include="Entities\Implementation\SlowPoke.cs" />
     <Compile Include="Entities\GameClient.cs" />
-    <Compile Include="Entities\PlayerAreaDescriptor.cs" />
     <Compile Include="Game\IDescribable.cs" />
     <Compile Include="Game\IConnectionsManager.cs" />
     <Compile Include="Game\IGameCoordinator.cs" />
