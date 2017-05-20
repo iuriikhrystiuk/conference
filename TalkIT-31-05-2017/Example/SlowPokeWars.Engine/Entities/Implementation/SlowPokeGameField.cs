@@ -8,8 +8,8 @@ namespace SlowPokeWars.Engine.Entities
 {
     public class SlowPokeGameField : IGameField
     {
-        private static readonly Position TopStartingPosition = new Position(50, 99, new ReverseMovementActor());
-        private static readonly Position BottomStatingPosition = new Position(50, 1, new DefaultMovementActor());
+        private static readonly Position TopStartingPosition = new Position(50, 98, new ReverseMovementActor());
+        private static readonly Position BottomStatingPosition = new Position(50, 2, new DefaultMovementActor());
 
         private AreaDescriptor area = new AreaDescriptor(new Position(50, 50, new DefaultMovementActor()), 50, 50);
 

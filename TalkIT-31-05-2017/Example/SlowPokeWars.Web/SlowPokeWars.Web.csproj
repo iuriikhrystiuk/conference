@@ -176,6 +176,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Client\src\app\app.ts" />
     <TypeScriptCompile Include="Client\src\app\boot.ts" />
+    <TypeScriptCompile Include="Client\src\app\game-field.ts" />
     <TypeScriptCompile Include="Client\src\custom-typings.d.ts" />
     <TypeScriptCompile Include="Client\src\main.browser.ts" />
     <TypeScriptCompile Include="Client\src\polyfills.browser.ts" />

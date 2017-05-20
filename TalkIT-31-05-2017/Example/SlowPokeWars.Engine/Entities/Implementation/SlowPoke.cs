@@ -16,7 +16,7 @@ namespace SlowPokeWars.Engine.Entities
 
         public AreaDescriptor GetArea()
         {
-            return new AreaDescriptor(Position, 2, 1);
+            return new AreaDescriptor(Position, 4, 2);
         }
 
         public void UpdateState()

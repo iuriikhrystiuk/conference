@@ -26,10 +26,22 @@ namespace SlowPokeWars.Engine.Entities
                 return false;
             }
 
+            if (target is Projectile)
+            {
+                var collidingProjectile = target as Projectile;
+                if (collidingProjectile._parent.Equals(_parent))
+                {
+                    return false;
+                }
+            }
+
             if (!target.Destroyed)
             {
                 target.Destroy();
-                _parent.Score();
+                if (target is IFieldPlayer)
+                {
+                    _parent.Score();
+                }
             }
 
             Destroy();

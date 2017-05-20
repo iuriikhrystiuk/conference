@@ -4,23 +4,17 @@
     selector: "my-app",
     template: `
     <h2>My game is: {{gameId}}</h2>
-    <div>Self: {{self | json}}</div>
-    <div>Opponent: {{opponent | json}}</div>
-    <div>Objects: {{objects | json}}</div>
+
     <div>Error: {{error}}</div>
     <div>
         <button (click)="connect()">Connect</button>
         <button (click)="disconnect()">Disconnect</button>
     </div>
-    <div>
-        <button (click)="left()">Left</button>
-        <button (click)="right()">Right</button>
-        <button (click)="up()">Up</button>
-        <button (click)="down()">Down</button>
-    </div>
-    <div>
-        <button (click)="fire()">Fire</button>
-    </div>
+    <game-field [field]="gameState" 
+                [self]="self" 
+                [opponent]="opponent" 
+                [objects]="objects"
+                [invert]="invert"></game-field>
   `
 })
 export class AppComponent {
@@ -31,8 +25,9 @@ export class AppComponent {
     opponent: any;
     objects: any;
     error: string;
+    invert: boolean;
 
-    constructor(private readonly zone:NgZone) {
+    constructor(private readonly zone: NgZone) {
         this.onConnected = this.onConnected.bind(this);
         this.gameUpdated = this.gameUpdated.bind(this);
         this.displayError = this.displayError.bind(this);
@@ -83,9 +78,11 @@ export class AppComponent {
             if (field.top && field.top.identifier === this.proxy.connection.id) {
                 this.self = field.top;
                 this.opponent = field.bottom;
+                this.invert = false;
             } else if (field.bottom && field.bottom.identifier === this.proxy.connection.id) {
                 this.self = field.bottom;
                 this.opponent = field.top;
+                this.invert = true;
             } else {
                 this.resetSatate();
             }
@@ -115,5 +112,30 @@ export class AppComponent {
     @HostListener("window:beforeunload", ["$event"])
     public onUnload(event) {
         this.proxy.connection.stop();
+    }
+
+    @HostListener("window:keydown", ["$event"])
+    public onKeypress(event) {
+        switch (event.keyCode) {
+            case 37:
+                this.left();
+                break;
+            case 39:
+                this.right();
+                break;
+            case 38:
+                this.up();
+                break;
+            case 40:
+                this.down();
+                break;
+            case 32:
+                this.fire();
+                break;
+            default:
+                return;
+        }
+
+        event.preventDefault();
     }
 }
