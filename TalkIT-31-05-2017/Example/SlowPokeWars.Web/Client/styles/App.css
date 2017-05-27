@@ -1,0 +1,21 @@
+﻿@import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+.html, .body {
+    height: 100%;
+}
+
+.main-container {
+    display: block;
+    height: 100%;
+    margin-left: 20em;
+    margin-right: 20em;
+}
+
+.main-container game-field {
+    display: block;
+    text-align: center;
+}
+
+game-field canvas {
+    border: 1px black dotted;
+}

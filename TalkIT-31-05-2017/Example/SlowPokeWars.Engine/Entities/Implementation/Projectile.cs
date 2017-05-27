@@ -60,7 +60,7 @@ namespace SlowPokeWars.Engine.Entities
 
         public AreaDescriptor GetArea()
         {
-            return new AreaDescriptor(Position, 1, 1);
+            return new AreaDescriptor(Position, 2, 2);
         }
 
         public void UpdateState()
@@ -122,7 +122,7 @@ namespace SlowPokeWars.Engine.Entities
             _field.AddObject(this);
         }
 
-        public bool Destroyed { get; private set; }
+        public bool Destroyed { get; set; }
 
         public JObject GetDescription()
         {

@@ -3,7 +3,15 @@
 @Component({
     selector: "game-field",
     template: `
+    <div>
+        <h2>Opponent: {{this.opponent.name}}</h2>
+        <h3>Score: {{this.opponent.points}}</h3>
+    </div>
     <canvas></canvas>
+    <div>
+        <h2>Connected as: {{this.self.name}}</h2>
+        <h3>Score: {{this.self.points}}</h3>
+    </div>
   `
 })
 export class GameFieldComponent implements OnChanges, OnInit {
@@ -15,7 +23,7 @@ export class GameFieldComponent implements OnChanges, OnInit {
     canvasContext: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
 
-    private magnifier: number = 3;
+    private magnifier: number = 5;
 
     constructor(private readonly element: ElementRef) {
     }
@@ -33,37 +41,53 @@ export class GameFieldComponent implements OnChanges, OnInit {
         if (this.field)
             this.paintField(this.field);
         if (this.self) {
-            this.canvasContext.strokeStyle  = "green";
-            this.paintObject(this.self);
+            this.canvasContext.fillStyle  = "green";
+            this.paintObject(this.self, "fill");
         }
         if (this.opponent) {
-            this.canvasContext.strokeStyle  = "red";
-            this.paintObject(this.opponent);
+            this.canvasContext.fillStyle  = "red";
+            this.paintObject(this.opponent, "fill");
         }
         if (this.objects) {
-            this.canvasContext.strokeStyle = "blue";
             for (let object of this.objects) {
-                this.paintObject(object);
+                if (object.parent === this.self.identifier) {
+                    this.canvasContext.strokeStyle = "blue";
+                } else {
+                    this.canvasContext.strokeStyle = "orange";
+                }
+                this.paintObject(object, "stroke");
             }
         }
     }
 
     private paintField(field: any) {
-        this.canvas.setAttribute("width", "310");
-        this.canvas.setAttribute("height", "310");
+        this.canvas.setAttribute("width", "500");
+        this.canvas.setAttribute("height", "500");
     }
 
-    private paintObject(object: any) {
-        let ordinata = this.invert ? this.invertOrdinata(object.area.topLeft.y * this.magnifier) : object.area.topLeft.y * this.magnifier;
+    private paintObject(object: any, paintStyle: string) {
+        let ordinata = this.invert ? this.invertCoordinates(object.area.bottomRight.y * this.magnifier) : object.area.topLeft.y * this.magnifier;
         let width = (object.area.bottomRight.y - object.area.topLeft.y) * this.magnifier;
-        this.canvasContext.strokeRect(
-            object.area.topLeft.x * this.magnifier,
-            ordinata + (this.invert ? -width : 0),
-            (object.area.bottomRight.x - object.area.topLeft.x) * this.magnifier,
-            width);
+
+        let abscissa = this.invert ? object.area.topLeft.x * this.magnifier : this.invertCoordinates(object.area.bottomRight.x * this.magnifier);
+        if (paintStyle === "fill") {
+            this.canvasContext.fillRect(
+                abscissa,
+                ordinata,
+                (object.area.bottomRight.x - object.area.topLeft.x) * this.magnifier,
+                width);
+        }
+
+        if (paintStyle === "stroke") {
+            this.canvasContext.strokeRect(
+                abscissa,
+                ordinata,
+                (object.area.bottomRight.x - object.area.topLeft.x) * this.magnifier,
+                width);
+        }
     }
 
-    private invertOrdinata(y: number): number {
-        return 305 - y;
+    private invertCoordinates(y: number): number {
+        return 500 - y;
     }
 }

@@ -5,7 +5,6 @@ const commonConfig = require("./webpack.common.js"); // the settings that are co
 
 const AddAssetHtmlPlugin = require("add-asset-html-webpack-plugin");
 const DefinePlugin = require("webpack/lib/DefinePlugin");
-const LoaderOptionsPlugin = require("webpack/lib/LoaderOptionsPlugin");
 const ProvidePlugin = require("webpack/lib/ProvidePlugin");
 
 const ENV = process.env.ENV = process.env.NODE_ENV = "development";
@@ -160,8 +159,10 @@ module.exports = function (options) {
                         "@angular/http",
                         "@angular/router",
                         "@angularclass/hmr",
-                        "rxjs"
-                    ]
+                        "rxjs",
+                        "jquery",
+                        "bootstrap"
+                    ],
                 },
                 dllDir: helpers.root("dll"),
                 webpackConfig: webpackMergeDll(commonConfig({ env: ENV }), {

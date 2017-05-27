@@ -8,8 +8,8 @@ namespace SlowPokeWars.Engine.Entities
 {
     public class SlowPokeGameField : IGameField
     {
-        private static readonly Position TopStartingPosition = new Position(50, 98, new ReverseMovementActor());
-        private static readonly Position BottomStatingPosition = new Position(50, 2, new DefaultMovementActor());
+        private static readonly Position TopStartingPosition = new Position(50, 97, new ReverseMovementActor());
+        private static readonly Position BottomStatingPosition = new Position(50, 3, new DefaultMovementActor());
 
         private AreaDescriptor area = new AreaDescriptor(new Position(50, 50, new DefaultMovementActor()), 50, 50);
 
@@ -107,8 +107,10 @@ namespace SlowPokeWars.Engine.Entities
                     RemoveObject(_fieldObjects.ElementAt(i));
                 }
             }
-            _topPlayer.Position = TopStartingPosition;
-            _bottomPlayer.Position= BottomStatingPosition;
+            _topPlayer.Position = TopStartingPosition.Clone();
+            _topPlayer.Destroyed = false;
+            _bottomPlayer.Position= BottomStatingPosition.Clone();
+            _topPlayer.Destroyed = false;
         }
 
         public void Enter(IFieldPlayer player)
@@ -116,14 +118,14 @@ namespace SlowPokeWars.Engine.Entities
             if (_topPlayer == null)
             {
                 _topPlayer = player;
-                player.Position = TopStartingPosition;
+                player.Position = TopStartingPosition.Clone();
                 player.AcceptField(this);
                 _fieldObjects.Add(_topPlayer);
             }
             else if (_bottomPlayer == null)
             {
                 _bottomPlayer = player;
-                player.Position = BottomStatingPosition;
+                player.Position = BottomStatingPosition.Clone();
                 player.AcceptField(this);
                 _fieldObjects.Add(_bottomPlayer);
             }

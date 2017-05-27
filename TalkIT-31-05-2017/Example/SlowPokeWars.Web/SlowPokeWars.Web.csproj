@@ -125,6 +125,7 @@
     <Content Include="Client\config\helpers.js" />
     <Content Include="Client\config\webpack.dev.js" />
     <Content Include="Client\config\webpack.common.js" />
+    <Content Include="Client\styles\App.css" />
     <Content Include="Client\webpack.config.js" />
     <Content Include="Global.asax" />
     <Content Include="Client\src\Index.html" />
@@ -176,6 +177,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Client\src\app\app.ts" />
     <TypeScriptCompile Include="Client\src\app\boot.ts" />
+    <TypeScriptCompile Include="Client\src\app\game-container.ts" />
     <TypeScriptCompile Include="Client\src\app\game-field.ts" />
     <TypeScriptCompile Include="Client\src\custom-typings.d.ts" />
     <TypeScriptCompile Include="Client\src\main.browser.ts" />

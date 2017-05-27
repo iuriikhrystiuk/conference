@@ -2,7 +2,7 @@
 {
     public interface ICollidable
     {
-        bool Destroyed { get; }
+        bool Destroyed { get; set; }
 
         bool Collide(ICollidable target);
 

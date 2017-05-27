@@ -1,5 +1,4 @@
-﻿using System.Runtime;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using SlowPokeWars.Engine.Game;
 
 namespace SlowPokeWars.Engine.Entities
@@ -34,25 +33,25 @@ namespace SlowPokeWars.Engine.Entities
         public void IncrementAbscissa()
         {
             memento = new PositionMemento(X, Y);
-            X += MovementActor.GetIncrement();
+            X += MovementActor.GetIncrement() * MovementActor.Speed;
         }
 
         public void DecrementAbscissa()
         {
             memento = new PositionMemento(X, Y);
-            X += MovementActor.GetDecrement();
+            X += MovementActor.GetDecrement() * MovementActor.Speed;
         }
 
         public void IncrementOrdinata()
         {
             memento = new PositionMemento(X, Y);
-            Y += MovementActor.GetIncrement();
+            Y += MovementActor.GetIncrement() * MovementActor.Speed;
         }
 
         public void DecrementOrdinata()
         {
             memento = new PositionMemento(X, Y);
-            Y += MovementActor.GetDecrement();
+            Y += MovementActor.GetDecrement() * MovementActor.Speed;
         }
 
         public void Restore()
@@ -85,6 +84,11 @@ namespace SlowPokeWars.Engine.Entities
         public override int GetHashCode()
         {
             return X.GetHashCode() ^ Y.GetHashCode();
+        }
+
+        public Position Clone()
+        {
+            return new Position(X, Y, MovementActor);
         }
     }
 

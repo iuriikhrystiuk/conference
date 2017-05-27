@@ -6,17 +6,18 @@ namespace SlowPokeWars.Engine.Entities
     public class SlowPoke : NotifiableBase, IFieldPlayer
     {
         private IGameField _field;
+        private readonly int _height = 3;
 
         public GameClient Client { get; }
         public int Points { get; private set; }
 
         public Position Position { get; set; }
 
-        public bool Destroyed { get; private set; }
+        public bool Destroyed { get; set; }
 
         public AreaDescriptor GetArea()
         {
-            return new AreaDescriptor(Position, 4, 2);
+            return new AreaDescriptor(Position, 6, _height);
         }
 
         public void UpdateState()
@@ -79,7 +80,10 @@ namespace SlowPokeWars.Engine.Entities
         public void Fire()
         {
             var projectile = new Projectile(this);
-            projectile.Position = new Position(Position.X, Position.Y, Position.MovementActor);
+            projectile.Position = new Position(
+                Position.X, 
+                Position.Y + Position.MovementActor.GetIncrement() * _height * 2, 
+                new FasterMovementActor(Position.MovementActor, 5));
             projectile.AcceptField(_field);
             projectile.SubscribeNotifications(Notify);
             Notify();
@@ -111,6 +115,7 @@ namespace SlowPokeWars.Engine.Entities
         {
             var description = new JObject();
             description.Add("identifier", Client.ConnectionId);
+            description.Add("name", Client.Name);
             description.Add("position", Position.GetDescription());
             description.Add("points", Points);
             description.Add("area", GetArea().GetDescription());
