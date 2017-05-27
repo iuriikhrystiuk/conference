@@ -107,10 +107,16 @@ namespace SlowPokeWars.Engine.Entities
                     RemoveObject(_fieldObjects.ElementAt(i));
                 }
             }
-            _topPlayer.Position = TopStartingPosition.Clone();
-            _topPlayer.Destroyed = false;
-            _bottomPlayer.Position= BottomStatingPosition.Clone();
-            _topPlayer.Destroyed = false;
+            if (_topPlayer != null)
+            {
+                _topPlayer.Position = TopStartingPosition.Clone();
+                _topPlayer.Destroyed = false;
+            }
+            if (_bottomPlayer != null)
+            {
+                _bottomPlayer.Position = BottomStatingPosition.Clone();
+                _topPlayer.Destroyed = false;
+            }
         }
 
         public void Enter(IFieldPlayer player)
@@ -141,6 +147,7 @@ namespace SlowPokeWars.Engine.Entities
             {
                 _fieldObjects.Remove(_topPlayer);
                 _topPlayer = null;
+                Reset();
                 return true;
             }
 
@@ -148,6 +155,7 @@ namespace SlowPokeWars.Engine.Entities
             {
                 _fieldObjects.Remove(_bottomPlayer);
                 _bottomPlayer = null;
+                Reset();
                 return true;
             }
 

@@ -4,13 +4,13 @@
     selector: "game-field",
     template: `
     <div>
-        <h2>Opponent: {{this.opponent.name}}</h2>
-        <h3>Score: {{this.opponent.points}}</h3>
+        <h2>Opponent: {{this.getName(this.opponent)}}</h2>
+        <h3>Score: {{this.getPoints(this.opponent)}}</h3>
     </div>
     <canvas></canvas>
     <div>
-        <h2>Connected as: {{this.self.name}}</h2>
-        <h3>Score: {{this.self.points}}</h3>
+        <h2>Connected as: {{this.getName(this.self)}}</h2>
+        <h3>Score: {{this.getPoints(this.self)}}</h3>
     </div>
   `
 })
@@ -89,5 +89,21 @@ export class GameFieldComponent implements OnChanges, OnInit {
 
     private invertCoordinates(y: number): number {
         return 500 - y;
+    }
+
+    private getName(player: any) {
+        if (player) {
+            return player.name;
+        }
+
+        return null;
+    }
+
+    private getPoints(player: any) {
+        if (player) {
+            return player.points;
+        }
+
+        return null;
     }
 }

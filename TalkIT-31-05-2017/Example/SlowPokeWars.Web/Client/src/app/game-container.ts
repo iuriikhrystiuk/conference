@@ -7,7 +7,6 @@
             <h1>Welcome to Slowpoke Wars!</h1>
             <h2>Enter your name to connect to game:</h2>
             <input type="text" [(ngModel)]="name" class="form-control"/>
-            <div>Error: {{error}}</div>
             <div>
                 <button (click)="connect()" class="btn btn-primary" [disabled]="!(name)">Connect</button>
             </div>
@@ -40,10 +39,16 @@ export class GameContainerComponent {
         this.onConnected = this.onConnected.bind(this);
         this.gameUpdated = this.gameUpdated.bind(this);
         this.displayError = this.displayError.bind(this);
+        this.onKeypress = this.onKeypress.bind(this);
+        this.up = this.up.bind(this);
+        this.down = this.down.bind(this);
+        this.right = this.right.bind(this);
+        this.left = this.left.bind(this);
+        this.fire = this.fire.bind(this);
     }
 
     public ngOnInit(): any {
-
+        
         const connection = $.hubConnection("http://localhost:50270");
         connection.logging = true;
         this.proxy = connection.createHubProxy("GameHub");
@@ -51,7 +56,7 @@ export class GameContainerComponent {
     }
 
     public connect() {
-        // automtic connections will not trigger UI update in angular
+        // automatic connections will not trigger UI update in angular
         // since it is not using default zone triggers
         this.proxy.connection.start({ jsonp: true }).done(this.onConnected);
     }
@@ -130,6 +135,12 @@ export class GameContainerComponent {
         this.error = error.message;
     }
 
+    private doAction(action) {
+        if (this.opponent) {
+            action();
+        }
+    }
+
     @HostListener("window:beforeunload", ["$event"])
     public onUnload(event) {
         this.proxy.connection.stop();
@@ -139,19 +150,19 @@ export class GameContainerComponent {
     public onKeypress(event) {
         switch (event.keyCode) {
             case 37:
-                this.left();
+                this.doAction(this.left);
                 break;
             case 39:
-                this.right();
+                this.doAction(this.right);
                 break;
             case 38:
-                this.up();
+                this.doAction(this.up);
                 break;
             case 40:
-                this.down();
+                this.doAction(this.down);
                 break;
             case 32:
-                this.fire();
+                this.doAction(this.fire);
                 break;
             default:
                 return;
