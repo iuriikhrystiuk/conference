@@ -23,10 +23,13 @@ namespace SlowPokeWars.Web
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{action}");
 
+            // Server Setup
             app.MapSignalR(new HubConfiguration
             {
-                EnableJSONP = true,
+                EnableJavaScriptProxies = false, // true if you do not want to write proxies yourself
+                EnableJSONP = true, // here b/c server starts on port that differes from UI server port.
                 EnableDetailedErrors = true,
+                // required, if you want your DI container to resolve hub dependencies.
                 Resolver = bootstrapper.GetSignalRDependencyResolver()
             });
 

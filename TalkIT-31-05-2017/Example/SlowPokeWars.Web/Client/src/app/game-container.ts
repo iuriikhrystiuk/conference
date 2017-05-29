@@ -48,7 +48,6 @@ export class GameContainerComponent {
     }
 
     public ngOnInit(): any {
-        
         const connection = $.hubConnection("http://localhost:50270");
         connection.logging = true;
         this.proxy = connection.createHubProxy("GameHub");
@@ -59,6 +58,21 @@ export class GameContainerComponent {
         // automatic connections will not trigger UI update in angular
         // since it is not using default zone triggers
         this.proxy.connection.start({ jsonp: true }).done(this.onConnected);
+
+        this.proxy.connection.reconnecting(() => {
+        });
+
+        this.proxy.connection.reconnected(() => {
+        });
+
+        this.proxy.connection.disconnected(() => {
+        });
+
+        this.proxy.connection.disconnected(()=> {
+            setTimeout(() => {
+                this.proxy.connection.start().done(this.onConnected);
+            }, 5000); // Restart connection after 5 seconds.
+        });
     }
 
     public left() {
