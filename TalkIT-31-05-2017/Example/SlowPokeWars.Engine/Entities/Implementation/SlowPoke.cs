@@ -83,7 +83,7 @@ namespace SlowPokeWars.Engine.Entities
             projectile.Position = new Position(
                 Position.X, 
                 Position.Y + Position.MovementActor.GetIncrement() * _height * 2, 
-                new FasterMovementActor(Position.MovementActor, 5));
+                new FasterMovementActor(Position.MovementActor, 1));
             projectile.AcceptField(_field);
             projectile.SubscribeNotifications(Notify);
             Notify();

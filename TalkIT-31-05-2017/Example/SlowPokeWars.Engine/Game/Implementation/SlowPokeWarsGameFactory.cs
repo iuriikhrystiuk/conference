@@ -6,7 +6,7 @@ namespace SlowPokeWars.Engine.Game
     {
         public IGameInstance CreateGameInstance()
         {
-            return new SlowPokeWarsGame(new SlowPokeGameField(new SlowPokeCollisionDetector(), new TimerGameTicker(1000)));
+            return new SlowPokeWarsGame(new SlowPokeGameField(new SlowPokeCollisionDetector(), new TimerGameTicker(200)));
         }
     }
 }
