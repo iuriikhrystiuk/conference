@@ -48,7 +48,7 @@ export class GameContainerComponent {
     }
 
     public ngOnInit(): any {
-        const connection = $.hubConnection("http://localhost:50270");
+        const connection = $.hubConnection();
         connection.logging = true;
         this.proxy = connection.createHubProxy("GameHub");
         this.proxy.on("gameUpdated", this.gameUpdated);
