@@ -8,10 +8,8 @@ const CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CheckerPlugin = require("awesome-typescript-loader").CheckerPlugin;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const LoaderOptionsPlugin = require("webpack/lib/LoaderOptionsPlugin");
 const ScriptExtHtmlWebpackPlugin = require("script-ext-html-webpack-plugin");
 
-const HMR = helpers.hasProcessFlag("hot");
 const METADATA = {
     title: "Slow Poke Wars",
     baseUrl: "/",
@@ -248,7 +246,7 @@ module.exports = function (options) {
              * See: https://www.npmjs.com/package/copy-webpack-plugin
              */
             new CopyWebpackPlugin([
-                { from: helpers.concatPath("src/assets"), to: "assets" }
+                { from: helpers.concatPath("src/assets"), to: "assets" },
             ]),
 
 
@@ -262,6 +260,7 @@ module.exports = function (options) {
              */
             new HtmlWebpackPlugin({
                 template: helpers.concatPath("src/index.html"),
+                filename: "../../index.html",
                 title: METADATA.title,
                 chunksSortMode: "dependency",
                 metadata: METADATA,
