@@ -65,7 +65,7 @@ export class GameContainerComponent {
         this.proxy.connection.reconnected(() => {
         });
 
-        this.proxy.connection.disconnected(() => {
+        this.proxy.connection.error(() => {
         });
 
         this.proxy.connection.disconnected(()=> {
