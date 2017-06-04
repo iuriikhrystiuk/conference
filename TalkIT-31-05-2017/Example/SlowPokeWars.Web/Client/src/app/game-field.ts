@@ -4,13 +4,13 @@
     selector: "game-field",
     template: `
     <div>
-        <h2>Opponent: {{this.getName(this.opponent)}}</h2>
-        <h3>Score: {{this.getPoints(this.opponent)}}</h3>
+        <h3>Opponent: {{this.getName(this.opponent)}}</h3>
+        <h4>Score: {{this.getPoints(this.opponent)}}</h4>
     </div>
     <canvas></canvas>
     <div>
-        <h2>Connected as: {{this.getName(this.self)}}</h2>
-        <h3>Score: {{this.getPoints(this.self)}}</h3>
+        <h3>Connected as: {{this.getName(this.self)}}</h3>
+        <h4>Score: {{this.getPoints(this.self)}}</h4>
     </div>
   `
 })
@@ -23,7 +23,7 @@ export class GameFieldComponent implements OnChanges, OnInit {
     canvasContext: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
 
-    private magnifier: number = 5;
+    private magnifier: number = 4;
 
     constructor(private readonly element: ElementRef) {
     }
@@ -61,8 +61,8 @@ export class GameFieldComponent implements OnChanges, OnInit {
     }
 
     private paintField(field: any) {
-        this.canvas.setAttribute("width", "500");
-        this.canvas.setAttribute("height", "500");
+        this.canvas.setAttribute("width", "400");
+        this.canvas.setAttribute("height", "400");
     }
 
     private paintObject(object: any, paintStyle: string) {
@@ -88,7 +88,7 @@ export class GameFieldComponent implements OnChanges, OnInit {
     }
 
     private invertCoordinates(y: number): number {
-        return 500 - y;
+        return 400 - y;
     }
 
     private getName(player: any) {
