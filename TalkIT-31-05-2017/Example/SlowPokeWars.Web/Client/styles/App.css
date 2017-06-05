@@ -7,8 +7,19 @@
 .main-container {
     display: block;
     height: 100%;
-    margin-left: 20em;
-    margin-right: 20em;
+}
+
+@media(min-width: 601px) {
+    .main-container {
+        margin-left: 20em;
+        margin-right: 20em;
+    }
+}
+
+@media(max-width: 600px) {
+    .main-container {
+        margin: 0;
+    }
 }
 
 .main-container game-field {

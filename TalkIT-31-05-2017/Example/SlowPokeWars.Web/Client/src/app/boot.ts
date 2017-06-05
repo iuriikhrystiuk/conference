@@ -6,7 +6,7 @@ import { GameFieldComponent } from "./game-field";
 import { GameContainerComponent } from "./game-container";
 import "expose-loader?jQuery!jquery";
 import "../../../node_modules/signalr/jquery.signalR.js";
-import "!style-loader!css-loader!../../styles/app.css";
+import "!style-loader!css-loader!../../styles/App.css";
 
 @NgModule({
     imports: [BrowserModule, FormsModule],
