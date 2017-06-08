@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SlowPokeWars.Engine.Entities
 {
@@ -11,7 +12,7 @@ namespace SlowPokeWars.Engine.Entities
 
             var objectsToCollide = new List<ICollidable>();
 
-            foreach (var fieldObject in objectsOnField)
+            foreach (var fieldObject in objectsOnField.ToList())
             {
                 var fieldObjectArea = fieldObject.GetArea();
                 if (fieldObjectArea.Intersects(targetObjectArea) > 0)

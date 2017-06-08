@@ -142,7 +142,9 @@ export class GameContainerComponent {
     }
 
     private onConnected() {
-        this.proxy.invoke("enter", this.name).done(this.gameUpdated).fail(this.displayError);
+        setTimeout(() => {
+            this.proxy.invoke("enter", this.name).done(this.gameUpdated).fail(this.displayError);
+        });
     }
 
     private displayError(error: any) {
